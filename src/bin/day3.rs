@@ -1,11 +1,16 @@
 #![feature(iter_array_chunks)]
+#![feature(test)]
+extern crate test;
+
 #[macro_use]
 extern crate maplit;
+
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
 use std::collections::HashSet;
 
-fn main() -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day3.txt")?;
-    let priority = hashmap! {
+static PRIORITIES: Lazy<HashMap<char, u32>> = Lazy::new(|| {
+    hashmap! {
         'a' => 1,
         'b' => 2,
         'c' => 3,
@@ -58,10 +63,11 @@ fn main() -> anyhow::Result<()> {
         'X' => 50,
         'Y' => 51,
         'Z' => 52,
-    };
+    }
+});
 
-    let part1: u32 = file
-        .lines()
+fn part1(file: &str) -> u32 {
+    file.lines()
         .map(|line| {
             let size = line.len();
             let (first, second) = line.split_at(size / 2);
@@ -70,14 +76,14 @@ fn main() -> anyhow::Result<()> {
             let second: HashSet<_> = second.chars().collect();
 
             let mut common: HashSet<_> = first.intersection(&second).collect();
-            let value = priority[common.drain().next().unwrap()];
+            let value = PRIORITIES[common.drain().next().unwrap()];
             value
         })
-        .sum();
-    println!("part1: {}", part1);
+        .sum()
+}
 
-    let part2: u32 = file
-        .lines()
+fn part2(file: &str) -> u32 {
+    file.lines()
         .array_chunks::<3>()
         .map(|chunks| {
             let first: HashSet<_> = chunks[0].chars().collect();
@@ -86,11 +92,33 @@ fn main() -> anyhow::Result<()> {
 
             let bitand = &first & &second;
             let mut common: HashSet<_> = bitand.intersection(&third).collect();
-            let value = priority[common.drain().next().unwrap()];
+            let value = PRIORITIES[common.drain().next().unwrap()];
             value
         })
-        .sum();
-    println!("part2: {}", part2);
+        .sum()
+}
 
+fn main() -> anyhow::Result<()> {
+    let file = std::fs::read_to_string("inputs/day3.txt")?;
+
+    println!("part1: {}", part1(&file));
+    println!("part2: {}", part2(&file));
+
+    Ok(())
+}
+
+use test::{black_box, Bencher};
+
+#[bench]
+fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
+    let file = std::fs::read_to_string("inputs/day3.txt")?;
+    b.iter(|| part1(black_box(&file)));
+    Ok(())
+}
+
+#[bench]
+fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
+    let file = std::fs::read_to_string("inputs/day3.txt")?;
+    b.iter(|| part2(black_box(&file)));
     Ok(())
 }

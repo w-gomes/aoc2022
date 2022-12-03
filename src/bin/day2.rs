@@ -1,3 +1,6 @@
+#![feature(test)]
+extern crate test;
+
 fn part1(f: &str) -> u32 {
     f.lines()
         .map(
@@ -40,5 +43,21 @@ fn main() -> anyhow::Result<()> {
     let file = std::fs::read_to_string("inputs/day2.txt")?;
     println!("part1 {}", part1(&file));
     println!("part2 {}", part2(&file));
+    Ok(())
+}
+
+use test::{black_box, Bencher};
+
+#[bench]
+fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
+    let file = std::fs::read_to_string("inputs/day2.txt")?;
+    b.iter(|| part1(black_box(&file)));
+    Ok(())
+}
+
+#[bench]
+fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
+    let file = std::fs::read_to_string("inputs/day2.txt")?;
+    b.iter(|| part2(black_box(&file)));
     Ok(())
 }
