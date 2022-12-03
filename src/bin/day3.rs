@@ -2,7 +2,6 @@
 #[macro_use]
 extern crate maplit;
 use std::collections::HashSet;
-use std::ops::BitAnd;
 
 fn main() -> anyhow::Result<()> {
     let file = std::fs::read_to_string("inputs/day3.txt")?;
@@ -85,9 +84,8 @@ fn main() -> anyhow::Result<()> {
             let second: HashSet<_> = chunks[1].chars().collect();
             let third: HashSet<_> = chunks[2].chars().collect();
 
-            let temp = first.bitand(&second);
-
-            let mut common: HashSet<_> = temp.intersection(&third).collect();
+            let bitand = &first & &second;
+            let mut common: HashSet<_> = bitand.intersection(&third).collect();
             let value = priority[common.drain().next().unwrap()];
             value
         })
