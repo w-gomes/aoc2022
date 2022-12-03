@@ -9,6 +9,8 @@ use once_cell::sync::Lazy;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
+static FILE: &str = include_str!("day3.txt");
+
 static PRIORITIES: Lazy<HashMap<char, u32>> = Lazy::new(|| {
     hashmap! {
         'a' => 1,
@@ -99,10 +101,8 @@ fn part2(file: &str) -> u32 {
 }
 
 fn main() -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day3.txt")?;
-
-    println!("part1: {}", part1(&file));
-    println!("part2: {}", part2(&file));
+    println!("part1: {}", part1(FILE));
+    println!("part2: {}", part2(FILE));
 
     Ok(())
 }
@@ -111,14 +111,12 @@ use test::{black_box, Bencher};
 
 #[bench]
 fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day3.txt")?;
-    b.iter(|| part1(black_box(&file)));
+    b.iter(|| part1(black_box(FILE)));
     Ok(())
 }
 
 #[bench]
 fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day3.txt")?;
-    b.iter(|| part2(black_box(&file)));
+    b.iter(|| part2(black_box(FILE)));
     Ok(())
 }

@@ -1,12 +1,12 @@
 #![feature(test)]
 extern crate test;
 
-use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+static FILE: &str = include_str!("day?.txt");
+
 fn main() -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day?.txt")?;
-    let file = File::open("inputs/day?.txt")?;
+    let file = std::fs::File::open("inputs/day?.txt")?;
     let file = BufReader::new(file);
 
     Ok(())

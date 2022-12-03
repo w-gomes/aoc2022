@@ -1,7 +1,10 @@
 #![feature(test)]
+#![feature(const_try)]
 extern crate test;
 
 use itertools::sorted;
+
+static FILE: &str = include_str!("day1.txt");
 
 fn part1(file: &str) -> u32 {
     let mut vec = Vec::new();
@@ -34,10 +37,8 @@ fn part2(file: &str) -> u32 {
 }
 
 fn main() -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day1.txt")?;
-
-    println!("part1: {}", part1(&file));
-    println!("part2: {}", part2(&file));
+    println!("part1: {}", part1(FILE));
+    println!("part2: {}", part2(FILE));
 
     Ok(())
 }
@@ -46,14 +47,12 @@ use test::{black_box, Bencher};
 
 #[bench]
 fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day1.txt")?;
-    b.iter(|| part1(black_box(&file)));
+    b.iter(|| part1(black_box(FILE)));
     Ok(())
 }
 
 #[bench]
 fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
-    let file = std::fs::read_to_string("inputs/day1.txt")?;
-    b.iter(|| part2(black_box(&file)));
+    b.iter(|| part2(black_box(FILE)));
     Ok(())
 }
