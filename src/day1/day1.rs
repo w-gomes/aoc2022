@@ -45,13 +45,11 @@ fn main() -> anyhow::Result<()> {
 use test::{black_box, Bencher};
 
 #[bench]
-fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
+fn run_part1(b: &mut Bencher) {
     b.iter(|| part1(black_box(FILE)));
-    Ok(())
 }
 
 #[bench]
-fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
+fn run_part2(b: &mut Bencher) {
     b.iter(|| part2(black_box(FILE)));
-    Ok(())
 }
