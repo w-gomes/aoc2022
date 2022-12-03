@@ -1,5 +1,4 @@
 #![feature(test)]
-#![feature(const_try)]
 extern crate test;
 
 use itertools::sorted;
