@@ -59,13 +59,13 @@ use test::{black_box, Bencher};
 #[bench]
 fn run_part1(b: &mut Bencher) -> anyhow::Result<()> {
     let list = parse(FILE);
-    b.iter(|| part1(black_box(list)));
+    b.iter(|| part1(black_box(&list)));
     Ok(())
 }
 
 #[bench]
 fn run_part2(b: &mut Bencher) -> anyhow::Result<()> {
     let list = parse(FILE);
-    b.iter(|| part2(black_box(list)));
+    b.iter(|| part2(black_box(&list)));
     Ok(())
 }
